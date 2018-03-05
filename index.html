@@ -1,33 +1,110 @@
-<!DOCTYPE HTML>
-<html lang="en">
-
+<!-- <html>
 <head>
-    <!-- Main CSS  -->
-    <link rel="stylesheet" href="css/main.css">
-    <!-- Font Awesome Icons -->
-    <script src="https://use.fontawesome.com/b420e0814b.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <!-- META VIEWPORT -->
-    <meta name="viewport" content="width=device-width,initial=1.0">
-    <!-- animations -->
-    <link rel="stylesheet" href="css/animate.css">
-    <meta charset="utf-8">
-    <!-- Angluar Js -->
-    <script src="js/angular.min.js"></script>
+  <title>Welcome!</title>
 </head>
-
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-
-    <!-- Main JS -->
-    <script src="js/main.js"></script>
-
+<body>
+  <h1>Welcome John Doe!</h1>
+  <p>Our latest product:
+  <a href="products/greenmouse.html">green mouse</a>!
 </body>
-
 </html>
+-->
+<html>
+<head>
+  <title>Welcome!</title>
+</head>
+<body>
+  <h1>Welcome ${user}!</h1>
+  <p>Our latest product:
+  <a href="${latestProduct.url}">${latestProduct.name}</a>!
+</body>
+</html>
+
+
+<!-- The if directive
+With the if directive you can conditionally skip a section of the template.
+For example, assume that in the very first example you want to greet your boss, Big Joe, differently than other users:
+-->
+
+<html>
+<head>
+  <title>Welcome!</title>
+</head>
+<body>
+  <h1>
+    Welcome ${user}<#if user == "Big Joe">, our beloved leader</#if>!
+  </h1>
+  <p>Our latest product:
+  <a href="${latestProduct.url}">${latestProduct.name}</a>!
+</body>
+</html>
+
+<!-- Here you have told FreeMarker that the ", our beloved leader" should be there only if the value of the variable user is equal to the string "Big Joe".
+In general, things between <#if condition> and </#if> tags are skipped if condition is false (the boolean value).
+
+Let's look at condition more closely: == is an operator that tests if the values at its left and right side are equivalent,
+and the results is a boolean value, true or false accordingly.
+On the left side of == I have referenced a variable with the syntax that should be already familiar;
+this will be replaced with the value of the variable. In general, unquoted words inside directives or interpolations are treated as references to variables.
+ On the right side I have specified a literal string. Literal strings in templates must always be put inside quotation marks. -->
+
+ <!--This will print "Pythons are free today!" if their price is 0:-->
+
+<#if animals.python.price == 0>
+  Pythons are free today!
+</#if>
+
+
+<!-- With the <#else> tag you can specify what to do if the condition is false. For example: -->
+
+<#if animals.python.price < animals.elephant.price>
+  Pythons are cheaper than elephants today.
+<#else>
+  Pythons are not cheaper than elephants today.
+</#if>
+
+<!-- This prints "Pythons are cheaper than elephants today.
+" if the price of python is less than the price of elephant, or else it prints "Pythons are not cheaper than elephants today."
+ You can refine this further by using elseif: -->
+
+ <#if animals.python.price < animals.elephant.price>
+  Pythons are cheaper than elephants today.
+<#elseif animals.elephant.price < animals.python.price>
+  Elephants are cheaper than pythons today.
+<#else>
+  Elephants and pythons cost the same today.
+</#if>
+
+<!--
+The list directive
+This is needed when you want to list something.
+For example if you merge this template with the data-model used earlier to demonstrate sequences: -->
+
+<p>We have these animals:
+<table border=1>
+  <#list animals as animal> <!-- "animals" is a just a variable -->
+    <tr><td>${animal.name}<td>${animal.price} Euros
+  </#list>
+</table>
+<!-- then the output will be: -->
+
+<p>We have these animals:
+<table border=1>
+    <tr><td>mouse<td>50 Euros
+    <tr><td>elephant<td>5000 Euros
+    <tr><td>python<td>4999 Euros
+</table>
+
+
+<!-- The generic form of the list directive is: <#list sequence as loopVariable>repeatThis</#list>.
+The repeatThis part will be repeated for each item in the sequence that you have specified with sequence,
+ one after the other, starting from the first item. In all repetitions loopVariable will hold the value of the current item.
+ This variable exists only between the <#list ...> and </#list> tags.
+
+The sequence can be any kind of expression. For example we could list the fruits of the example data model like this:
+-->
+<ul>
+<#list misc.fruits as fruit> <!-- The misc.fruits expression should be familiar to you; it references a variable in the data-model.-->
+  <li>${fruit}
+</#list>
+</ul>
